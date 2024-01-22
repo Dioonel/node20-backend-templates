@@ -1,40 +1,38 @@
+import { UserStore } from "./store.js";
+import { UserCreateDTO, UserUpdateDTO } from "./dto.js";
+
+const userStore = UserStore.getInstance();
+
 export class UserService {
-    private users = [
-        { id: 1, name: 'John'},
-        { id: 2, name: 'Jane'},
-        { id: 3, name: 'Jack'},
-        { id: 4, name: 'Jill'}
-    ];
-    private idCounter = 4;
+    // Singleton pattern
+    private static _instance: UserService;
+    private constructor() {}
+    static getInstance(): UserService {
+        if (!UserService._instance) {
+            UserService._instance = new UserService();
+        }
+        return UserService._instance;
+    }
+
 
     async getAll() {
-        return this.users;
+        return await userStore.getAll();
     }
 
-    async getById(id: number) {
-        return this.users.find(user => user.id === id);
+    async getById(id: string) {
+        return await userStore.getById(id);
     }
 
-    async create(name: string) {
-        const id = ++this.idCounter;
-        const user = { id, name };
-        this.users.push(user);
-        return user;
+    async create(body: UserCreateDTO) {
+        return await userStore.create(body);
     }
 
-    async update(id: number, name: string) {
-        const user = this.users.find(user => user.id === id);
-        if(user) {
-            user.name = name;
-        }
-        return user;
+    async update(id: string, body: UserUpdateDTO) {
+        return await userStore.update(id, body);
     }
 
-    async delete(id: number) {
-        const user = this.users.find(user => user.id === id);
-        if(user) {
-            this.users = this.users.filter(user => user.id !== id);
-        }
-        return user;
+    async delete(id: string) {
+        const user = await userStore.delete(id);
+        return { message: `User with id: ${id} deleted.` };
     }
 }

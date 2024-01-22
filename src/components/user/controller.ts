@@ -1,66 +1,75 @@
 import { Router } from 'express';
 
 import { UserService } from './service.js';
+import { UserCreateSchema, UserUpdateSchema, IdSchema } from './dto.js';
+import { joiValidator } from './../../middlewares/joi.validator.js';
 
 const router = Router();
-const service = new UserService();
+const service = UserService.getInstance();
 
-router.get('/', async (req, res) => {
+router.get('/',
+    async (req, res, next) => {
         try{
-            console.log(req.body);
             const response = await service.getAll();
             res.json(response);
         } catch (err) {
-            res.status(500).json({ error: 'Server Error' });
+            next(err);
         }
     }
 );
 
-router.get('/:id', async (req, res) => {
-    try {
-        console.log(req.params.id);
-        const response = await service.getById(parseInt(req.params.id));
-        if(response === undefined) throw new Error("Not found");
-        res.json(response);
-    } catch (err: any) {
-        res.status(500).json({ error: err.message });
+router.get('/:id',
+    joiValidator(IdSchema, 'params'),
+    async (req, res, next) => {
+        try {
+            console.log(req.params.id);
+            const response = await service.getById(req.params.id);
+            res.json(response);
+        } catch (err) {
+            next(err);
+        }
     }
-});
+);
 
-router.post('/register', async (req, res) => {
-    try {
-        if(req.body.name === undefined) throw new Error("Name is required");
-        console.log(req.body);
-        const response = await service.create(req.body.name);
-        if(response === undefined) throw new Error("Server Error");
-        res.json(response);
-    } catch (err: any) {
-        res.status(500).json({ error: err.message });
+router.post('/register',
+    joiValidator(UserCreateSchema, 'body'),
+    async (req, res, next) => {
+        try {
+            console.log(req.body);
+            const response = await service.create(req.body);
+            res.json(response);
+        } catch (err) {
+            next(err);
+        }
     }
-});
+);
 
-router.put('/:id', async (req, res) => {
-    try {
-        if(req.body.name === undefined) throw new Error("Name is required");
-        console.log(req.params.id, req.body);
-        const response = await service.update(parseInt(req.params.id), req.body.name);
-        if(response === undefined) throw new Error("Not found");
-        res.json(response);
-    } catch (err: any) {
-        res.status(500).json({ error: err.message });
+router.put('/:id', 
+    joiValidator(IdSchema, 'params'),
+    joiValidator(UserUpdateSchema, 'body'),
+    async (req, res, next) => {
+        try {
+            console.log(req.params.id, req.body);
+            const response = await service.update(req.params.id, req.body);
+            res.json(response);
+        } catch (err) {
+            next(err);
+        }
     }
-});
+);
 
-router.delete('/:id', async (req, res) => {
-    try {
-        console.log(req.params.id);
-        const response = await service.delete(parseInt(req.params.id));
-        if(response === undefined) throw new Error("Not found");
-        res.json(response);
-    } catch (err: any) {
-        res.status(500).json({ error: err.message });
+router.delete('/:id', 
+    joiValidator(IdSchema, 'params'),
+    async (req, res, next) => {
+        try {
+            console.log(req.params.id);
+            const response = await service.delete(req.params.id);
+            res.json(response);
+        } catch (err) {
+            next(err);
+        }
     }
-});
+);
 
 
 export default router;

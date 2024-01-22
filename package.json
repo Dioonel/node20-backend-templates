@@ -13,9 +13,11 @@
   "author": "Dionel Martinez <dionelmartinezc@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@hapi/boom": "^10.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.3.2",
     "express": "^4.18.2",
+    "joi": "^17.12.0",
     "ts-node": "^10.9.2"
   },
   "devDependencies": {

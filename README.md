@@ -1,8 +1,9 @@
-# Express + TypeScript, REST API basic CRUD
+# Express + TypeScript + Mongo, REST API CRUD
+This template also includes more features such as error handlers, type validation and singleton pattern for service and store classes.
 
 ### How to setup manually
 - ```npm init -y```
-- ```npm i cors dotenv express ts-node```
+- ```npm i cors dotenv express ts-node mongoose joi @hapi/boom```
 - ```npm i -D @types/node @types/express @types/cors nodemon typescript```
 - ```tsc --init``` or paste **tsconfig.ts** file in the root directory.
 - Create **/src** directory and paste all the template files inside.
