@@ -1,0 +1,28 @@
+{
+  "name": "node20-backend-templates",
+  "version": "1.0.0",
+  "description": "This will be a small \"library\" of templates to save time writing boilerplate code, mainly centered around Node.js 20 and Express, with some other technologies depending on the template. **Check the branches of this repo** to find the template you are looking for.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon --exec node --loader ts-node/esm src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "keywords": [],
+  "author": "Dionel Martinez <dionelmartinezc@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.2",
+    "express": "^4.18.2",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.5",
+    "nodemon": "^3.0.3",
+    "typescript": "^5.3.3"
+  }
+}
