@@ -1,7 +1,11 @@
 import { UserStore } from "./store.js";
 import { UserCreateDTO, UserUpdateDTO } from "./dto.js";
+import { AuthService } from "./../auth/service.js";
+import { ProductStore } from "./../product/store.js";
 
 const userStore = UserStore.getInstance();
+const authService = AuthService.getInstance();
+const productStore = ProductStore.getInstance();
 
 export class UserService {
     // Singleton pattern
@@ -24,6 +28,8 @@ export class UserService {
     }
 
     async create(body: UserCreateDTO) {
+        const hashedPassword = await authService.hashPassword(body.password);
+        body.password = hashedPassword;
         return await userStore.create(body);
     }
 
@@ -32,7 +38,8 @@ export class UserService {
     }
 
     async delete(id: string) {
-        const user = await userStore.delete(id);
+        await productStore.deleteBySeller(id);
+        await userStore.delete(id);
         return { message: `User with id: ${id} deleted.` };
     }
 }

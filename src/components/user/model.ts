@@ -17,7 +17,7 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true,
-        minLength: 1,
+        minLength: 5,
         maxLength: 64,
     },
     description: {
@@ -33,6 +33,15 @@ const userSchema = new Schema({
         max: 120,
         default: 0,
     },
+    role: {
+        type: String,
+        required: true,
+    },
+    products: {
+        type: [Schema.Types.ObjectId],
+        ref: 'product',
+        default: [],
+    },
     created_at: {
         type: Date,
         default: Date.now,
@@ -40,4 +49,4 @@ const userSchema = new Schema({
     }
 });
 
-export const userModel = model('user', userSchema);
+export const userModel = model('profile', userSchema);
